@@ -1,29 +1,18 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { HashRouter, Route } from 'react-router-dom';
+import { CacheRoute, CacheSwitch } from 'react-router-cache-route';
+
+import Home from './pages/home';
+import ApiLogin from './pages/api/login';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit
-          {' '}
-          <code>src/App.tsx</code>
-          {' '}
-          and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <HashRouter>
+      <CacheSwitch>
+        <CacheRoute exact path="/" key="home" component={Home} />
+        <Route exact path="/api/login" component={ApiLogin} />
+      </CacheSwitch>
+    </HashRouter>
   );
 }
 
