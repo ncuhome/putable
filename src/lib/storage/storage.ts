@@ -23,13 +23,25 @@ class Storage<T> {
   }
 }
 
-const enum apiKey {
+/*
+
+const enum globalKey {
   'spaceIndex'
 }
-type apiKeyType = keyof typeof apiKey
-const globalStorage = new Storage<apiKeyType>('global')
+type globalKeyType = keyof typeof globalKey
+const globalStorage = new Storage<globalKeyType>('global')
 
 const spaceStorage = new Storage<string>('spaceItem')
 const apiStorage = new Storage<string>('apiItem')
 
 export {globalStorage, spaceStorage, apiStorage};
+
+ */
+
+const enum globalKey {
+  'space'
+}
+type globalKeyType = keyof typeof globalKey
+const globalStorage = new Storage<globalKeyType>('global')
+
+export {globalStorage}
