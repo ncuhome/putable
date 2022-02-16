@@ -6,8 +6,12 @@
   "dependencies": {
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
+<<<<<<< HEAD
     "@mui/icons-material": "^5.4.2",
     "@mui/material": "^5.4.2",
+=======
+    "@mui/material": "^5.4.1",
+>>>>>>> 93e8d2530d540c9f5b9cd5a8aebc8691615051bb
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
@@ -15,6 +19,7 @@
     "@types/node": "^16.11.22",
     "@types/react": "^17.0.39",
     "@types/react-dom": "^17.0.11",
+    "notistack": "^2.0.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router": "^5.2.0",
