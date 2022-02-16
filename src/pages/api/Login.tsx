@@ -6,22 +6,44 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {Typography} from "@mui/material";
+import {LoginType, SpaceType} from "../../lib/interface/local";
+import {errorNotice} from "../../components/notice";
+import {useEffect} from "react";
 
 const theme = createTheme();
 
-export default function SignIn() {
+interface Props {
+  spaceID: number
+  spaceList?: SpaceType[]
+  onSpaceChange: (data: SpaceType[]) => void
+}
+export default function Index(props: Props) {
+  // TODO 改TextField受控组件，并在初始化时获取储存的值
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
     /*
     console.log({
       url: data.get('url'),
       account: data.get('account'),
       password: data.get('password'),
     });
-
      */
+    // TODO http request
+    const res = { token: 'token'}
+
+    const newLogin: LoginType = {
+      url: data.get('url') as string,
+      account: data.get('account') as string,
+      token: res.token
+    }
+    if(props.spaceList === undefined || props.spaceList.length - 1 < props.spaceID) {
+      errorNotice('对象不存在')
+      return
+    }
+    props.spaceList[props.spaceID].login = newLogin
+    props.onSpaceChange(props.spaceList)
   };
 
   return (

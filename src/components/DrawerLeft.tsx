@@ -68,6 +68,8 @@ export default function DrawerLeft() {
     setSpaceList(data)
   }, [])
 
+
+
   const handleOpenApiLogin = (spaceID: number) => {
     setApiLogin({open: true, spaceID: spaceID});
   }
@@ -77,6 +79,11 @@ export default function DrawerLeft() {
   }
   const handleCloseApiSetting = () => setApiSetting(apiSettingInit);
 
+  const onSpaceChange = (data: SpaceType[]) => {
+    setSpaceList(data)
+    setApiLogin(apiLoginInit)
+  }
+
   return (
     <>
       <Modal
@@ -85,7 +92,8 @@ export default function DrawerLeft() {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <ApiLogin />
+        <ApiLogin spaceID={apiLogin.spaceID} spaceList={spaceList}
+                  onSpaceChange={onSpaceChange}/>
       </Modal>
       <Modal
         open={apiSetting.open}
@@ -163,7 +171,7 @@ function Space(props: SpaceProps) {
       <Collapse in={open} timeout="auto" unmountOnExit>
         <Divider variant="middle" component="li" />
         <List sx={{ pl: 3 }} component="div" disablePadding>
-          <LoginState {...props.login} />
+          <LoginItem {...props.login} handleLogin={props.handleLogin} spaceID={props.spaceID}/>
           {
                 props.apiList.map((item, index) => (
                   <Ports spaceID={props.spaceID} apiID={index} key={index} {...item}
@@ -180,13 +188,19 @@ function Space(props: SpaceProps) {
   );
 }
 
-function LoginState(props: LoginType) {
+interface LoginItemProps extends LoginType {
+  spaceID: number
+  handleLogin: (spaceID: number) => void
+}
+function LoginItem(props: LoginItemProps) {
   if (props.token !== '') {
     return (
       <div>
         <ListItem>
           <ListItemText primary="已登录" />
-          <Button variant="outlined" size="small">切换</Button>
+          <Button variant="outlined" size="small" onClick={() => props.handleLogin(props.spaceID)}>
+            切换
+          </Button>
         </ListItem>
         <Divider variant="middle" component="li" />
       </div>
@@ -196,7 +210,9 @@ function LoginState(props: LoginType) {
     <div>
       <ListItem>
         <ListItemText primary="未登录" />
-        <Button variant="contained" size="small">登录</Button>
+        <Button variant="outlined" size="small" onClick={() => props.handleLogin(props.spaceID)}>
+          登录
+        </Button>
       </ListItem>
       <Divider variant="middle" component="li" />
     </div>

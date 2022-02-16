@@ -2,41 +2,48 @@ import React from 'react';
 
 import { useSnackbar, SnackbarProvider } from 'notistack';
 
-const { enqueueSnackbar } = useSnackbar();
-
 const during = (message: string) => Math.min(8000, Math.max(3000, message.length * 200));
 
-const successNotice = (message: string) => {
-  enqueueSnackbar(
-    message,
-    { variant: 'success', autoHideDuration: during(message) },
-  );
-};
+let successNotice: (message: string) => void
+let infoNotice: (message: string) => void
+let warningNotice : (message: string) => void
+let errorNotice: (message: string) => void
 
-const infoNotice = (message: string) => {
-  enqueueSnackbar(
-    message,
-    { variant: 'info', autoHideDuration: during(message) },
-  );
-};
+function NoticeFunc() {
+  const { enqueueSnackbar } = useSnackbar();
 
-const warningNotice = (message: string) => {
-  enqueueSnackbar(
-    message,
-    { variant: 'warning', autoHideDuration: during(message) },
-  );
-};
+  successNotice = (message: string) => {
+    enqueueSnackbar(
+      message,
+      { variant: 'success', autoHideDuration: during(message) },
+    );
+  };
+  infoNotice = (message: string) => {
+    enqueueSnackbar(
+      message,
+      { variant: 'info', autoHideDuration: during(message) },
+    );
+  };
+  warningNotice = (message: string) => {
+    enqueueSnackbar(
+      message,
+      { variant: 'warning', autoHideDuration: during(message) },
+    );
+  };
+  errorNotice = (message: string) => {
+    enqueueSnackbar(
+      message,
+      { variant: 'error', autoHideDuration: during(message) },
+    );
+  };
 
-const errorNotice = (message: string) => {
-  enqueueSnackbar(
-    message,
-    { variant: 'error', autoHideDuration: during(message) },
-  );
-};
+  return null
+}
 
 function NoticeProvider({ children }: { children: React.ReactNode }) {
   return (
     <SnackbarProvider maxSnack={3} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+      <NoticeFunc />
       { children }
     </SnackbarProvider>
   );
