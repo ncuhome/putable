@@ -37,7 +37,7 @@ export {globalStorage, spaceStorage, apiStorage};
  */
 
 const enum globalKey {
-  'space'
+  'spaceList'
 }
 type globalKeyType = keyof typeof globalKey
 const globalStorage = new Storage<globalKeyType>('global')
