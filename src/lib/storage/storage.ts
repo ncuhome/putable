@@ -1,3 +1,5 @@
+import {SpaceIndex} from "../interface/local";
+
 class Storage<T> {
   private readonly prefix: string
 
@@ -22,9 +24,12 @@ class Storage<T> {
 }
 
 const enum apiKey {
-  'apiData'
+  'spaceIndex'
 }
 type apiKeyType = keyof typeof apiKey
-const storage = new Storage<apiKeyType>('api')
+const globalStorage = new Storage<apiKeyType>('global')
 
-export {storage};
+const spaceStorage = new Storage<string>('spaceItem')
+const apiStorage = new Storage<string>('apiItem')
+
+export {globalStorage, spaceStorage, apiStorage};

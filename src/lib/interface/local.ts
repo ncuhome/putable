@@ -1,7 +1,10 @@
+export type SpaceIndex = string[]
+export type ApiIndex = string[]
+
 export interface Space {
   name: string
   login: Login
-  api: Api[]
+  apiIndex: ApiIndex
 }
 
 export interface Login {
