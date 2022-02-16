@@ -1,5 +1,3 @@
-import {SpaceIndex} from "../interface/local";
-
 class Storage<T> {
   private readonly prefix: string
 

@@ -26,15 +26,25 @@ export default function ApiSetting() {
     setMethod(event.target.value as string);
   };
   return (
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xs" sx={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 600,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        outline: 0
+      }}>
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
-            position:'relative',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            padding: 4,
+            background: '#ffffff',
           }}
         >
           <Typography component="h1" variant="h5" sx={{mt:5}}>
@@ -74,8 +84,9 @@ export default function ApiSetting() {
             />
             <Button
               type="submit"
+              fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 ,ml:20}}
+              sx={{ mt: 3, mb: 2 }}
             >
               确认
             </Button>
