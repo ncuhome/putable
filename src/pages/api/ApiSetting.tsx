@@ -5,9 +5,26 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import './update.css'
 import MenuItem from '@mui/material/MenuItem';
-export default function AddOrModify() {
+import {useState} from "react";
+export default function ApiSetting() {
+  const [method, setMethod] = useState('')
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    // eslint-disable-next-line no-console
+    /*
+    console.log({
+      url: data.get('url'),
+      method: data.get('method'),
+      description: data.get('description'),
+    });
+
+     */
+  };
+  const handleMethodChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setMethod(event.target.value as string);
+  };
   return (
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -20,51 +37,40 @@ export default function AddOrModify() {
             alignItems: 'center',
           }}
         >
-          <Button
-              type="submit"
-              variant="contained"
-              sx={{position:'absolute',left:3,top:3}}
-            >
-              返回
-            </Button>
           <Typography component="h1" variant="h5" sx={{mt:5}}>
             填写接口地址及调用方法
           </Typography>
-          <Box component="form" onSubmit={() =>{}} noValidate sx={{ mt: 1}}>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1}}>
             <TextField
               margin="normal"
               required
               fullWidth
-              id=""
+              id="url"
               label="接口地址"
-              name=""
+              name="url"
               autoFocus
             />
             <TextField
               margin="normal"
               required
               fullWidth
-              id=""
+              id="method"
+              name='method'
               select
               label="请求方法"
+              value={method}
+              onChange={handleMethodChange}
             >
-              <MenuItem>
-                GET
-              </MenuItem>
-              <MenuItem>
-                POST
-              </MenuItem>
-
+              <MenuItem value={'GET'}>GET</MenuItem>
+              <MenuItem value={'POST'}>POST</MenuItem>
             </TextField>
             <TextField
               margin="normal"
               required
               fullWidth
-              name=""
+              name="description"
               label="接口说明"
-              type="password"
-              id="password"
-              autoComplete="current-password"
+              id="description"
             />
             <Button
               type="submit"
