@@ -19,6 +19,7 @@ import {globalStorage} from "../lib/storage/storage";
 import Modal from "@mui/material/Modal";
 import ApiLogin from "../pages/api/Login";
 import ApiSetting from "../pages/api/ApiSetting";
+import {errorNotice, infoNotice} from "./notice";
 
 const drawerWidth = 300;
 
@@ -63,12 +64,17 @@ export default function DrawerLeft() {
         apiList: []
       }
       ];
-      globalStorage.set('spaceList', data)
     }
     setSpaceList(data)
   }, [])
 
-
+  useEffect(() => {
+    infoNotice('ok')
+    console.log(spaceList)
+    if(spaceList) {
+      globalStorage.set('spaceList', spaceList)
+    }
+  }, [spaceList])
 
   const handleOpenApiLogin = (spaceID: number) => {
     setApiLogin({open: true, spaceID: spaceID});

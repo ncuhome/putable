@@ -42,8 +42,9 @@ export default function Index(props: Props) {
       errorNotice('对象不存在')
       return
     }
-    props.spaceList[props.spaceID].login = newLogin
-    props.onSpaceChange(props.spaceList)
+    const newData = [...props.spaceList]
+    newData[props.spaceID].login = newLogin
+    props.onSpaceChange(newData)
   };
 
   return (
