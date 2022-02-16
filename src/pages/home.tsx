@@ -4,6 +4,7 @@ import {useState} from "react";
 
 import ApiLogin from './api/Login';
 import ApiSetting from './api/ApiSetting';
+import DrawerLeft from "../components/DrawerLeft";
 
 export default function BasicModal() {
   const [openApiLogin, setOpenApiLogin] = useState(false);
@@ -15,7 +16,8 @@ export default function BasicModal() {
   const handleCloseApiSetting = () => setOpenApiSetting(false);
 
   return (
-    <div>
+    <>
+      <DrawerLeft />
       <Modal
         open={openApiLogin}
         onClose={handleCloseApiLogin}
@@ -32,7 +34,7 @@ export default function BasicModal() {
       >
         <ApiSetting />
       </Modal>
-    </div>
+    </>
   );
 }
 

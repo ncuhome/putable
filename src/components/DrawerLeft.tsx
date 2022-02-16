@@ -13,17 +13,33 @@ import Button from '@mui/material/Button';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import Chip from '@mui/material/Chip';
+import {ApiType, LoginType, SpaceType} from '../lib/interface/local'
 
 const drawerWidth = 300;
 
 export default function DrawerLeft() {
-  const spaceList = [
-    { name: '空间1', state: 0, ports: [] },
-    {
+  const spaceList: SpaceType[] = [{
+    name: '空间1',
+    login: {
+        url: '1',
+        account: '1',
+        token: '1'
+      },
+    apiList: [{
+          url: '2',
+          method: 'GET',
+          description: '接口1',
+        }
+      ]
+    }, {
       name: '空间2',
-      state: 1,
-      ports: [{ Pname: '接口1', type: 'GET' }, { Pname: '接口2', type: 'POST' }],
-    },
+      login: {
+        url: '',
+        account: '',
+        token: ''
+      },
+      apiList: []
+    }
   ];
   return (
     <Box sx={{ display: 'flex' }}>
@@ -50,10 +66,7 @@ export default function DrawerLeft() {
   );
 }
 
-interface NestedItem {
-  spaceList: SpaceProps[]
-}
-function NestedItem(props: NestedItem) {
+function NestedItem({ spaceList }: { spaceList: SpaceType[]}) {
   return (
     <List
       sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
@@ -61,20 +74,15 @@ function NestedItem(props: NestedItem) {
       aria-labelledby="nested-list-subheader"
     >
       {
-        props.spaceList.map((item) => (
-          <Space key={item.name} name={item.name} state={item.state} ports={item.ports} />
+        spaceList.map((item) => (
+          <Space key={item.name} {...item} />
         ))
       }
     </List>
   );
 }
 
-interface SpaceProps {
-  name: string,
-  state: number,
-  ports: PortsProps[]
-}
-function Space(props: SpaceProps) {
+function Space(props: SpaceType) {
   const [open, setOpen] = React.useState(true);
   const handleClick = () => {
     setOpen(!open);
@@ -88,10 +96,10 @@ function Space(props: SpaceProps) {
       <Collapse in={open} timeout="auto" unmountOnExit>
         <Divider variant="middle" component="li" />
         <List sx={{ pl: 3 }} component="div" disablePadding>
-          <LoginState state={props.state} />
+          <LoginState {...props.login} />
           {
-                props.ports.map((item) => (
-                  <Ports key={item.Pname} Pname={item.Pname} type={item.type} />
+                props.apiList.map((item) => (
+                  <Ports key={item.url} {...item} />
                 ))
               }
           <AddPort />
@@ -102,11 +110,8 @@ function Space(props: SpaceProps) {
   );
 }
 
-interface LoginStateProps {
-  state: number
-}
-function LoginState(props: LoginStateProps) {
-  if (props.state === 1) {
+function LoginState(props: LoginType) {
+  if (props.token !== '') {
     return (
       <div>
         <ListItem>
@@ -136,17 +141,12 @@ function AddPort() {
   );
 }
 
-interface PortsProps {
-  type: string
-  Pname: string
-}
-
-function Ports(props: PortsProps) {
+function Ports(props: ApiType) {
   return (
     <div>
       <ListItem>
-        <Chip label={props.type} color="primary" size="small" />
-        <ListItemText primary={props.Pname} />
+        <Chip label={props.method} color="primary" size="small" />
+        <ListItemText primary={props.description} />
         <Button size="small">修改</Button>
         <Button variant="contained" size="small">发送</Button>
       </ListItem>
