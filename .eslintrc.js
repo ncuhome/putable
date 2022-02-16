@@ -4,8 +4,6 @@ module.exports = {
     es2021: true,
   },
   extends: [
-    'airbnb',
-    'airbnb-typescript',
     'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:react/jsx-runtime',

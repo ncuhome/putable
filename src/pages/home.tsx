@@ -1,5 +1,7 @@
+import DrawerLeft from '../components/DrawerLeft';
+
 export default function Index() {
   return (
-    <h1>a</h1>
+    <DrawerLeft />
   );
 }
