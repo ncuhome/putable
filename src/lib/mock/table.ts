@@ -5,17 +5,17 @@ export default [
     response: {
       data: {
         columns_option: [{
-            header_name: 'id',
+            headerName: 'id',
             type: 'string',
             width: 200,
             editable: false,
           },{
-            header_name: 'title',
+            headerName: 'title',
             type: 'string',
             width: 200,
             editable: true,
           },{
-            header_name: 'content',
+            headerName: 'content',
             type: 'string',
             width: 400,
             editable: true,

@@ -12,7 +12,7 @@ export interface LoginResType {
 
 export type ColumnsOptionType = ColumnOptionType[]
 export interface ColumnOptionType {
-  header_name?: string,
+  headerName?: string,
   type?: string,
   width?: number,
   editable?: boolean,
