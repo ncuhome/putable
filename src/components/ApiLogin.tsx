@@ -7,8 +7,9 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {Typography} from "@mui/material";
 import {LoginType, SpaceType} from "../lib/interface/local";
-import {errorNotice} from "./notice";
+import {errorNotice, successNotice} from "./notice";
 import {useEffect} from "react";
+import {loginRequest} from "../lib/api/api";
 
 const theme = createTheme();
 
@@ -20,7 +21,7 @@ interface Props {
 export default function Index(props: Props) {
   // TODO 改TextField受控组件，并在初始化时获取储存的值
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     /*
@@ -30,8 +31,18 @@ export default function Index(props: Props) {
       password: data.get('password'),
     });
      */
-    // TODO http request
-    const res = { token: 'token'}
+    let res = { token: ''}
+    try {
+      res = await loginRequest({
+        url: data.get('url') as string,
+        account: data.get('account') as string,
+        password: data.get('password') as string,
+      })
+      successNotice('登录成功')
+    } catch (err) {
+      errorNotice(err as string)
+      return
+    }
 
     const newLogin: LoginType = {
       url: data.get('url') as string,

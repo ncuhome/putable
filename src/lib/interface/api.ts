@@ -6,11 +6,15 @@ export interface ErrorType {
   message: string
 }
 
+export interface LoginResType {
+  token: string
+}
+
 export interface ColumnOptionType {
   header_name?: string,
   type?: string,
-  width?: boolean,
-  editable?: true,
+  width?: number,
+  editable?: boolean,
 }
 
 export interface TableBaseType {

@@ -1,5 +1,5 @@
 export function axiosReqError(error: any): any {
-  throw error?.message || '请求发生错误，请检查网络后重试'
+  throw '请求发生错误，请检查网络后重试'
 }
 
 export function axiosResError(error: any): any {
