@@ -10,6 +10,7 @@ import {LoginType, SpaceType} from "../lib/interface/local";
 import {errorNotice, successNotice} from "./notice";
 import {loginRequest} from "../lib/api/api";
 import {addLoading, delLoading} from "./loading";
+import {useEffect, useState} from "react";
 
 const theme = createTheme();
 
@@ -19,7 +20,18 @@ interface Props {
   onSpaceChange: (data: SpaceType[]) => void
 }
 export default function Index(props: Props) {
-  // TODO 改TextField受控组件，并在初始化时获取储存的值
+  const [url, setUrl] = useState('')
+  const [account, setAccount] = useState('')
+  useEffect(() => {
+    if(props.spaceList === undefined
+      || props.spaceList.length - 1 < props.spaceID) {
+      errorNotice('对象不存在')
+      return
+    }
+    const login = props.spaceList[props.spaceID].login
+    setUrl(login.url)
+    setAccount(login.account)
+  }, [])
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -57,6 +69,14 @@ export default function Index(props: Props) {
     props.onSpaceChange(newData)
   }
 
+  const handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUrl(event.target.value as string);
+  };
+  const handleAccountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setAccount(event.target.value as string);
+  };
+
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs" sx={{
@@ -91,6 +111,8 @@ export default function Index(props: Props) {
               id="url"
               label="登录接口地址"
               name="url"
+              value={url}
+              onChange={handleUrlChange}
               autoFocus
             />
             <TextField
@@ -99,6 +121,8 @@ export default function Index(props: Props) {
               fullWidth
               id="account"
               label="账号"
+              value={account}
+              onChange={handleAccountChange}
               name="account"
             />
             <TextField
