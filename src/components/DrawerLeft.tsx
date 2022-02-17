@@ -19,7 +19,9 @@ import {globalStorage} from "../lib/storage/storage";
 import Modal from "@mui/material/Modal";
 import ApiLogin from "../pages/api/Login";
 import ApiSetting from "../pages/api/ApiSetting";
-import {errorNotice, infoNotice, successNotice} from "./notice";
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import {DialogActions, DialogContent} from "@mui/material";
 
 const drawerWidth = 300;
 
@@ -38,6 +40,8 @@ export default function DrawerLeft() {
   const [apiLogin, setApiLogin] = useState<ApiLoginType>(apiLoginInit);
   const [apiSetting, setApiSetting] = useState<ApiSettingType>(apiSettingInit);
   const [spaceList, setSpaceList] = useState<SpaceType[]>()
+  const [spaceName, setSpaceName] = useState('')
+  const [spaceNameOpen, setSpaceNameOpen] = useState(false)
   useEffect(() => {
     let data = globalStorage.get<SpaceType[]>('spaceList')
     if(data === null) {
@@ -91,6 +95,24 @@ export default function DrawerLeft() {
     setSpaceList(data)
     setApiSetting(apiSettingInit)
   }
+  const onSpaceNameChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
+    setSpaceName(event.target.value)
+  }
+  const onSpaceNameSubmit = () => {
+    if(spaceList === undefined) return
+    const newData = [...spaceList]
+    newData.push({
+      name: spaceName,
+      login: {
+        url: '',
+        account: '',
+        token: ''
+      },
+      apiList: []
+    })
+    setSpaceList(newData)
+    setSpaceNameOpen(false)
+  }
 
   return (
     <>
@@ -112,6 +134,23 @@ export default function DrawerLeft() {
         <ApiSetting spaceID={apiSetting.spaceID} apiID={apiSetting.apiID} spaceList={spaceList}
                     onSpaceChange={onApiSettingSpaceChange}/>
       </Modal>
+      <Dialog open={spaceNameOpen} onClose={() => setSpaceNameOpen(false)}>
+        <DialogContent>
+          <TextField
+            margin="normal"
+            required
+            name="name"
+            label="空间名称"
+            id="name"
+            value={spaceName}
+            onChange={onSpaceNameChange}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={onSpaceNameSubmit}>确认</Button>
+        </DialogActions>
+      </Dialog>
+
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         <Drawer
@@ -132,7 +171,12 @@ export default function DrawerLeft() {
           { spaceList &&
             <NestedItem spaceList={spaceList}
                         handleLogin={handleOpenApiLogin} handleApiSetting={handleOpenApiSetting}/> }
-          <AddSpace />
+          <ListItem>
+            <ListItemText primary="新空间" />
+            <Button variant="outlined" size="small" onClick={() => setSpaceNameOpen(true)}>
+              添加
+            </Button>
+          </ListItem>
         </Drawer>
       </Box>
     </>
@@ -249,14 +293,5 @@ function Ports(props: Props) {
       </ListItem>
       <Divider variant="middle" component="li" />
     </div>
-  );
-}
-
-function AddSpace() {
-  return (
-    <ListItem>
-      <ListItemText primary="新空间" />
-      <Button variant="outlined" size="small">添加</Button>
-    </ListItem>
   );
 }
