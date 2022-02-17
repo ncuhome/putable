@@ -5,8 +5,7 @@ import {NoticeProvider} from "../components/notice";
 import Table from "../components/Table";
 import styles from './index.module.css'
 import {GridColDef, GridColumns, GridRowModel, GridRowsProp} from "@mui/x-data-grid";
-import {randomTraderName} from "@mui/x-data-grid-generator";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {ColumnsOptionType, TableDataType, TableRowsType} from "../lib/interface/api";
 import {globalStorage} from "../lib/storage/storage";
 
@@ -15,6 +14,20 @@ export default function Home() {
   const [tableRenderRows, setTableRenderRows] = useState<GridRowsProp>([])
   const [tableColumnsOption, setTableColumnsOption] = useState<ColumnsOptionType>([])
   const [tableRows, setTableRows] = useState<TableRowsType>([])
+  useEffect(() => {
+    const columnsOption = globalStorage.get<ColumnsOptionType>('tableColumns')
+    const rows = globalStorage.get<TableRowsType>('tableRows')
+    if(columnsOption !== null) {
+      setTableColumnsOption(columnsOption)
+      setTableRenderColumns(handleRenderColumns(columnsOption))
+      console.log(handleRenderColumns(columnsOption))
+    }
+    if(rows !== null) {
+      setTableRows(rows)
+      setTableRenderRows(handleRenderRows(rows))
+      console.log(handleRenderRows(rows))
+    }
+  }, [])
 
   const handleRenderRows = (source: TableRowsType) => {
     return source.map((row, index) => {
