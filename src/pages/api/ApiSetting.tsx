@@ -7,7 +7,16 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import MenuItem from '@mui/material/MenuItem';
 import {useState} from "react";
-export default function ApiSetting() {
+import {ApiType, LoginType, SpaceType} from "../../lib/interface/local";
+import {errorNotice} from "../../components/notice";
+
+interface Props {
+  spaceID: number
+  apiID?: number
+  spaceList?: SpaceType[]
+  onSpaceChange: (data: SpaceType[]) => void
+}
+export default function Index(props: Props) {
   const [method, setMethod] = useState('')
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -19,8 +28,30 @@ export default function ApiSetting() {
       method: data.get('method'),
       description: data.get('description'),
     });
-
      */
+
+    const newApi: ApiType = {
+      url: data.get('url') as string,
+      method: data.get('method') as string,
+      description: data.get('description') as string,
+    }
+    if(props.spaceList === undefined || props.spaceList.length - 1 < props.spaceID) {
+      errorNotice('对象不存在')
+      return
+    }
+    if(props.apiID === undefined) {
+      const newData = [...props.spaceList]
+      newData[props.spaceID].apiList.push(newApi)
+      props.onSpaceChange(newData)
+      return
+    }
+    if(props.spaceList[props.spaceID].apiList.length - 1 < props.apiID) {
+      errorNotice('对象不存在')
+      return
+    }
+    const newData = [...props.spaceList]
+    newData[props.spaceID].apiList[props.apiID] = newApi
+    props.onSpaceChange(newData)
   };
   const handleMethodChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMethod(event.target.value as string);

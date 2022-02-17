@@ -19,7 +19,7 @@ import {globalStorage} from "../lib/storage/storage";
 import Modal from "@mui/material/Modal";
 import ApiLogin from "../pages/api/Login";
 import ApiSetting from "../pages/api/ApiSetting";
-import {errorNotice, infoNotice} from "./notice";
+import {errorNotice, infoNotice, successNotice} from "./notice";
 
 const drawerWidth = 300;
 
@@ -27,16 +27,16 @@ interface ApiLoginType {
   open: boolean
   spaceID: number
 }
-interface ApiSetting {
+interface ApiSettingType{
   open: boolean
   spaceID: number
-  apiID: number
+  apiID?: number
 }
 export default function DrawerLeft() {
   const apiLoginInit = {open: false, spaceID: 0}
-  const apiSettingInit = {open: false, spaceID: 0, apiID: 0}
+  const apiSettingInit = {open: false, spaceID: 0}
   const [apiLogin, setApiLogin] = useState<ApiLoginType>(apiLoginInit);
-  const [apiSetting, setApiSetting] = useState<ApiSetting>(apiSettingInit);
+  const [apiSetting, setApiSetting] = useState<ApiSettingType>(apiSettingInit);
   const [spaceList, setSpaceList] = useState<SpaceType[]>()
   useEffect(() => {
     let data = globalStorage.get<SpaceType[]>('spaceList')
@@ -69,8 +69,6 @@ export default function DrawerLeft() {
   }, [])
 
   useEffect(() => {
-    infoNotice('ok')
-    console.log(spaceList)
     if(spaceList) {
       globalStorage.set('spaceList', spaceList)
     }
@@ -80,14 +78,18 @@ export default function DrawerLeft() {
     setApiLogin({open: true, spaceID: spaceID});
   }
   const handleCloseApiLogin = () => setApiLogin(apiLoginInit);
-  const handleOpenApiSetting = (spaceID: number, apiID: number) => {
+  const handleOpenApiSetting = (spaceID: number, apiID?: number) => {
     setApiSetting({open: true, spaceID: spaceID, apiID: apiID})
   }
   const handleCloseApiSetting = () => setApiSetting(apiSettingInit);
 
-  const onSpaceChange = (data: SpaceType[]) => {
+  const onApiLoginSpaceChange = (data: SpaceType[]) => {
     setSpaceList(data)
     setApiLogin(apiLoginInit)
+  }
+  const onApiSettingSpaceChange = (data: SpaceType[]) => {
+    setSpaceList(data)
+    setApiSetting(apiSettingInit)
   }
 
   return (
@@ -99,7 +101,7 @@ export default function DrawerLeft() {
         aria-describedby="modal-modal-description"
       >
         <ApiLogin spaceID={apiLogin.spaceID} spaceList={spaceList}
-                  onSpaceChange={onSpaceChange}/>
+                  onSpaceChange={onApiLoginSpaceChange}/>
       </Modal>
       <Modal
         open={apiSetting.open}
@@ -107,7 +109,8 @@ export default function DrawerLeft() {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <ApiSetting />
+        <ApiSetting spaceID={apiSetting.spaceID} apiID={apiSetting.apiID} spaceList={spaceList}
+                    onSpaceChange={onApiSettingSpaceChange}/>
       </Modal>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
@@ -139,7 +142,7 @@ export default function DrawerLeft() {
 interface NestedItemProps {
   spaceList: SpaceType[]
   handleLogin: (spaceID: number) => void
-  handleApiSetting: (spaceID: number, apiID: number) => void
+  handleApiSetting: (spaceID: number, apiID?: number) => void
 }
 function NestedItem(props: NestedItemProps) {
   return (
@@ -161,7 +164,7 @@ function NestedItem(props: NestedItemProps) {
 interface SpaceProps extends SpaceType {
   spaceID: number
   handleLogin: (spaceID: number) => void
-  handleApiSetting: (spaceID: number, apiID: number) => void
+  handleApiSetting: (spaceID: number, apiID?: number) => void
 }
 function Space(props: SpaceProps) {
   const [open, setOpen] = React.useState(true);
@@ -185,7 +188,10 @@ function Space(props: SpaceProps) {
                 ))
               }
           <ListItem>
-            <Button sx={{ mx: 'auto' }} variant="outlined" size="small">添加接口</Button>
+            <Button sx={{ mx: 'auto' }} variant="outlined" size="small"
+                    onClick={() => props.handleApiSetting(props.spaceID)}>
+              添加接口
+            </Button>
           </ListItem>
         </List>
       </Collapse>
@@ -236,7 +242,9 @@ function Ports(props: Props) {
       <ListItem>
         <Chip label={props.method} color="primary" size="small" />
         <ListItemText primary={props.description} />
-        <Button size="small">修改</Button>
+        <Button size="small" onClick={() => props.handleApiSetting(props.spaceID, props.apiID)}>
+          修改
+        </Button>
         <Button variant="contained" size="small">发送</Button>
       </ListItem>
       <Divider variant="middle" component="li" />
