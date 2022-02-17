@@ -123,6 +123,7 @@ export default function Index({ tableDataHandler, tableRowsData }: Props) {
   }
 
   const handleSend = async (spaceID: number, apiID: number) => {
+
     if(spaceList === undefined) return
     try {
       if(spaceList === null
@@ -133,12 +134,14 @@ export default function Index({ tableDataHandler, tableRowsData }: Props) {
       const login = spaceList[spaceID].login
       const api = spaceList[spaceID].apiList[apiID]
       if(api.method === 'GET') {
+        if(!confirm('发送GET请求将用新数据覆盖当前表格，是否继续')) return
         const tableData = await getTableRequest({
           url: api.url,
           token: login.token
         })
         tableDataHandler(tableData)
       } else {
+        if(!confirm('POST请求将发送至服务器，是否继续')) return
         await postTableRequest({
           url: api.url,
           token: login.token,
