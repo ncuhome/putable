@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import MenuItem from '@mui/material/MenuItem';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {ApiType, LoginType, SpaceType} from "../lib/interface/local";
 import {errorNotice} from "./notice";
 
@@ -17,19 +17,25 @@ interface Props {
   onSpaceChange: (data: SpaceType[]) => void
 }
 export default function Index(props: Props) {
+  const [url, setUrl] = useState('')
   const [method, setMethod] = useState('')
+  const [description, setDescription] = useState('')
+  useEffect(() => {
+    if(props.spaceList === undefined || props.apiID === undefined
+      || props.spaceList.length - 1 < props.spaceID
+      || props.spaceList[props.spaceID].apiList.length - 1 < props.apiID) {
+      errorNotice('对象不存在')
+      return
+    }
+    const api = props.spaceList[props.spaceID].apiList[props.apiID]
+    setUrl(api.url)
+    setMethod(api.method)
+    setDescription(api.description)
+  }, [])
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    /*
-    console.log({
-      url: data.get('url'),
-      method: data.get('method'),
-      description: data.get('description'),
-    });
-     */
-
     const newApi: ApiType = {
       url: data.get('url') as string,
       method: data.get('method') as string,
@@ -53,8 +59,14 @@ export default function Index(props: Props) {
     newData[props.spaceID].apiList[props.apiID] = newApi
     props.onSpaceChange(newData)
   };
+  const handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUrl(event.target.value as string);
+  };
   const handleMethodChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMethod(event.target.value as string);
+  };
+  const handleDescriptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDescription(event.target.value as string);
   };
   return (
       <Container component="main" maxWidth="xs" sx={{
@@ -89,6 +101,8 @@ export default function Index(props: Props) {
               id="url"
               label="接口地址"
               name="url"
+              value={url}
+              onChange={handleUrlChange}
               autoFocus
             />
             <TextField
@@ -112,6 +126,8 @@ export default function Index(props: Props) {
               name="description"
               label="接口说明"
               id="description"
+              value={description}
+              onChange={handleDescriptionChange}
             />
             <Button
               type="submit"
