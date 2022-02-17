@@ -25,6 +25,7 @@ import {DialogActions, DialogContent} from "@mui/material";
 import {TableDataType, TableRowsType} from "../lib/interface/api";
 import {errorNotice} from "./notice";
 import {getTableRequest, postTableRequest} from "../lib/api/api";
+import {addLoading, delLoading} from "./loading";
 
 const drawerWidth = 300;
 
@@ -123,7 +124,11 @@ export default function Index({ tableDataHandler, tableRowsData }: Props) {
   }
 
   const handleSend = async (spaceID: number, apiID: number) => {
-
+    addLoading()
+    await apiRequest(spaceID, apiID)
+    delLoading()
+  }
+  const apiRequest = async (spaceID: number, apiID: number) => {
     if(spaceList === undefined) return
     try {
       if(spaceList === null

@@ -8,8 +8,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {Typography} from "@mui/material";
 import {LoginType, SpaceType} from "../lib/interface/local";
 import {errorNotice, successNotice} from "./notice";
-import {useEffect} from "react";
 import {loginRequest} from "../lib/api/api";
+import {addLoading, delLoading} from "./loading";
 
 const theme = createTheme();
 
@@ -24,13 +24,12 @@ export default function Index(props: Props) {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    /*
-    console.log({
-      url: data.get('url'),
-      account: data.get('account'),
-      password: data.get('password'),
-    });
-     */
+    addLoading()
+    await login(data)
+    delLoading()
+  }
+
+  const login = async (data: FormData) => {
     let res = { token: ''}
     try {
       res = await loginRequest({
@@ -56,7 +55,7 @@ export default function Index(props: Props) {
     const newData = [...props.spaceList]
     newData[props.spaceID].login = newLogin
     props.onSpaceChange(newData)
-  };
+  }
 
   return (
     <ThemeProvider theme={theme}>

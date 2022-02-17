@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import DrawerLeft from "../components/DrawerLeft";
-import {NoticeProvider} from "../components/notice";
 import Table from "../components/Table";
 import styles from './index.module.css'
 import {GridColDef, GridColumns, GridRowModel, GridRowsProp} from "@mui/x-data-grid";
@@ -66,15 +65,13 @@ export default function Home() {
   }
 
   return (
-    <NoticeProvider>
-      <div className={styles.container}>
-        <DrawerLeft tableRowsData={tableRows} tableDataHandler={tableDataHandler}/>
-        <div className={styles.tableContainer}>
-          <Table rows={tableRenderRows} columns={tableRenderColumns}
-                 onCellCommit={onCellCommit}/>
-        </div>
+    <div className={styles.container}>
+      <DrawerLeft tableRowsData={tableRows} tableDataHandler={tableDataHandler}/>
+      <div className={styles.tableContainer}>
+        <Table rows={tableRenderRows} columns={tableRenderColumns}
+               onCellCommit={onCellCommit}/>
       </div>
-    </NoticeProvider>
+    </div>
   );
 }
 

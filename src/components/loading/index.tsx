@@ -44,16 +44,18 @@ function DisplayProgress({ loadingStack = 0 }: DisplayProgressProps) {
   return null;
 }
 
-const [addStack, setAddStack] = useState(0);
-const [delStack, setDelStack] = useState(0);
-const addLoading = () => {
-  setAddStack(addStack + 1);
-};
-const delLoading = () => {
-  setDelStack(delStack + 1);
-};
+let addLoading: () => void
+let delLoading: () => void
 
 function LoadingProvider({ children }: LoadingProps) {
+  const [addStack, setAddStack] = useState(0);
+  const [delStack, setDelStack] = useState(0);
+  addLoading = () => {
+    setAddStack(addStack + 1);
+  };
+  delLoading = () => {
+    setDelStack(delStack + 1);
+  };
   return (
     <>
       <DisplayProgress loadingStack={addStack - delStack} />
