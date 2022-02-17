@@ -10,6 +10,7 @@ export interface LoginResType {
   token: string
 }
 
+export type ColumnsOptionType = ColumnOptionType[]
 export interface ColumnOptionType {
   header_name?: string,
   type?: string,
@@ -23,13 +24,13 @@ export interface TableBaseType {
 }
 
 type RowType = string[]
-type TableType = RowType[]
+export type TableRowsType = RowType[]
 
 export interface TableDataType {
-  columns_option?: ColumnOptionType[]
-  table: TableType
+  columns_option?: ColumnsOptionType
+  table: TableRowsType
 }
 
 export interface TableDataReqType {
-  table: TableType
+  table: TableRowsType
 }

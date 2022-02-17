@@ -22,6 +22,9 @@ import ApiSetting from "./ApiSetting";
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import {DialogActions, DialogContent} from "@mui/material";
+import {TableDataType, TableRowsType} from "../lib/interface/api";
+import {errorNotice} from "./notice";
+import {getTableRequest, postTableRequest} from "../lib/api/api";
 
 const drawerWidth = 300;
 
@@ -34,7 +37,12 @@ interface ApiSettingType{
   spaceID: number
   apiID?: number
 }
-export default function DrawerLeft() {
+
+interface Props {
+  tableDataHandler: (data: TableDataType) => void
+  tableRowsData: TableRowsType
+}
+export default function Index({ tableDataHandler, tableRowsData }: Props) {
   const apiLoginInit = {open: false, spaceID: 0}
   const apiSettingInit = {open: false, spaceID: 0}
   const [apiLogin, setApiLogin] = useState<ApiLoginType>(apiLoginInit);
@@ -114,6 +122,36 @@ export default function DrawerLeft() {
     setSpaceNameOpen(false)
   }
 
+  const handleSend = async (spaceID: number, apiID: number) => {
+    if(spaceList === undefined) return
+    try {
+      if(spaceList === null
+        || spaceList.length - 1 < spaceID
+        || spaceList[spaceID].apiList.length - 1 < apiID) {
+        throw '对象不存在'
+      }
+      const login = spaceList[spaceID].login
+      const api = spaceList[spaceID].apiList[apiID]
+      if(api.method === 'GET') {
+        const tableData = await getTableRequest({
+          url: api.url,
+          token: login.token
+        })
+        tableDataHandler(tableData)
+      } else {
+        await postTableRequest({
+          url: api.url,
+          token: login.token,
+          data: {
+            table: tableRowsData
+          }
+        })
+      }
+    } catch (err) {
+      errorNotice(err as string)
+    }
+  }
+
   return (
     <>
       <Modal
@@ -168,9 +206,20 @@ export default function DrawerLeft() {
           <Toolbar />
           <Divider />
           {/* 空间折叠列表 */}
-          { spaceList &&
-            <NestedItem spaceList={spaceList}
-                        handleLogin={handleOpenApiLogin} handleApiSetting={handleOpenApiSetting}/> }
+          {
+            <List
+              sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+              component="nav"
+              aria-labelledby="nested-list-subheader"
+            >
+              {spaceList &&
+                spaceList.map((item, index) => (
+                  <Space spaceID={index} key={index} {...item} handleSend={handleSend}
+                         handleLogin={handleOpenApiLogin} handleApiSetting={handleOpenApiSetting}/>
+                ))
+              }
+            </List>
+          }
           <ListItem>
             <ListItemText primary="新空间" />
             <Button variant="outlined" size="small" onClick={() => setSpaceNameOpen(true)}>
@@ -183,32 +232,11 @@ export default function DrawerLeft() {
   );
 }
 
-interface NestedItemProps {
-  spaceList: SpaceType[]
-  handleLogin: (spaceID: number) => void
-  handleApiSetting: (spaceID: number, apiID?: number) => void
-}
-function NestedItem(props: NestedItemProps) {
-  return (
-    <List
-      sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
-      component="nav"
-      aria-labelledby="nested-list-subheader"
-    >
-      {
-        props.spaceList.map((item, index) => (
-          <Space spaceID={index} key={index} {...item}
-                 handleLogin={props.handleLogin} handleApiSetting={props.handleApiSetting}/>
-        ))
-      }
-    </List>
-  );
-}
-
 interface SpaceProps extends SpaceType {
   spaceID: number
   handleLogin: (spaceID: number) => void
   handleApiSetting: (spaceID: number, apiID?: number) => void
+  handleSend: (spaceID: number, apiID: number) => void
 }
 function Space(props: SpaceProps) {
   const [open, setOpen] = React.useState(true);
@@ -228,7 +256,7 @@ function Space(props: SpaceProps) {
           {
                 props.apiList.map((item, index) => (
                   <Ports spaceID={props.spaceID} apiID={index} key={index} {...item}
-                         handleApiSetting={props.handleApiSetting}/>
+                         handleApiSetting={props.handleApiSetting} handleSend={props.handleSend}/>
                 ))
               }
           <ListItem>
@@ -275,12 +303,16 @@ function LoginItem(props: LoginItemProps) {
   );
 }
 
-interface Props extends ApiType {
+interface PortsProps extends ApiType {
   spaceID: number
   apiID: number
   handleApiSetting: (spaceID: number, apiID: number) => void
+  handleSend: (spaceID: number, apiID: number) => void
 }
-function Ports(props: Props) {
+function Ports(props: PortsProps) {
+  const onSend = () => {
+    props.handleSend(props.spaceID, props.apiID)
+  }
   return (
     <div>
       <ListItem>
@@ -289,7 +321,7 @@ function Ports(props: Props) {
         <Button size="small" onClick={() => props.handleApiSetting(props.spaceID, props.apiID)}>
           修改
         </Button>
-        <Button variant="contained" size="small">发送</Button>
+        <Button variant="contained" size="small" onClick={onSend}>发送</Button>
       </ListItem>
       <Divider variant="middle" component="li" />
     </div>

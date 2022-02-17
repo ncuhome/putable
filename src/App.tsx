@@ -2,7 +2,7 @@ import React from 'react';
 import { HashRouter, Route } from 'react-router-dom';
 import { CacheRoute, CacheSwitch } from 'react-router-cache-route';
 
-import Home from './pages/home';
+import Home from './pages/Home';
 import './lib/mock/mock'
 
 function App() {

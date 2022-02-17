@@ -11,34 +11,19 @@ http.interceptors.request.use(undefined, axiosReqError)
 http.interceptors.response.use(undefined, axiosResError)
 
 interface TableRequestProps {
-  spaceList: SpaceType[],
-  spaceID: number,
-  apiID: number,
+  url: string,
+  token: string,
   data?: TableDataReqType,
 }
-export async function getTableRequest({ spaceList, spaceID, apiID, data }: TableRequestProps) {
-  if(spaceList === null
-    || spaceList.length - 1 < spaceID
-    || spaceList[spaceID].apiList.length - 1 < apiID) {
-    throw '对象不存在'
-  }
-  const login = spaceList[spaceID].login
-  const api = spaceList[spaceID].apiList[apiID]
-  return await http.get<BaseType<TableDataType>>(api.url, {headers: {
-    'Authorization': login.token
+export async function getTableRequest({ url, token }: TableRequestProps) {
+  return await http.get<BaseType<TableDataType>>(url, {headers: {
+    'Authorization': token
   }}).then(res => res.data.data)
 }
 
-export async function postTableRequest({ spaceList, spaceID, apiID, data }: TableRequestProps) {
-  if(spaceList === null
-    || spaceList.length - 1 < spaceID
-    || spaceList[spaceID].apiList.length - 1 < apiID) {
-    throw '对象不存在'
-  }
-  const login = spaceList[spaceID].login
-  const api = spaceList[spaceID].apiList[apiID]
-  return await http.post(api.url, data, {headers: {
-    'Authorization': login.token
+export async function postTableRequest({ url, token,  data }: TableRequestProps) {
+  return await http.post(url, data, {headers: {
+    'Authorization': token
   }})
 }
 
