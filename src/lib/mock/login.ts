@@ -4,7 +4,7 @@ export default [
     type: 'post',
     response: {
       data: {
-        token: 'jwt'
+        token: 'json web token'
       }
     }
   },

@@ -55,17 +55,21 @@ export default function Index({ tableDataHandler, tableRowsData }: Props) {
     let data = globalStorage.get<SpaceType[]>('spaceList')
     if(data === null) {
       data = [{
-        name: '空间1',
+        name: '测试空间',
         login: {
-          url: '1',
-          account: '1',
-          token: '1'
+          url: '/login',
+          account: 'pyf',
+          token: 'json web token'
         },
         apiList: [{
-          url: '2',
-          method: 'GET',
-          description: '接口1',
-        }
+            url: '/table',
+            method: 'GET',
+            description: '获取数据mock接口',
+          },{
+            url: '/table',
+            method: 'POST',
+            description: '推送数据mock接口',
+          },
         ]
       }, {
         name: '空间2',
