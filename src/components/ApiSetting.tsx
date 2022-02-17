@@ -7,8 +7,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import MenuItem from '@mui/material/MenuItem';
 import {useState} from "react";
-import {ApiType, LoginType, SpaceType} from "../../lib/interface/local";
-import {errorNotice} from "../../components/notice";
+import {ApiType, LoginType, SpaceType} from "../lib/interface/local";
+import {errorNotice} from "./notice";
 
 interface Props {
   spaceID: number

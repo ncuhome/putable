@@ -17,8 +17,8 @@ import {ApiType, LoginType, SpaceType} from '../lib/interface/local'
 import {useEffect, useState} from "react";
 import {globalStorage} from "../lib/storage/storage";
 import Modal from "@mui/material/Modal";
-import ApiLogin from "../pages/api/Login";
-import ApiSetting from "../pages/api/ApiSetting";
+import ApiLogin from "./ApiLogin";
+import ApiSetting from "./ApiSetting";
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import {DialogActions, DialogContent} from "@mui/material";

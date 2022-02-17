@@ -6,8 +6,8 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {Typography} from "@mui/material";
-import {LoginType, SpaceType} from "../../lib/interface/local";
-import {errorNotice} from "../../components/notice";
+import {LoginType, SpaceType} from "../lib/interface/local";
+import {errorNotice} from "./notice";
 import {useEffect} from "react";
 
 const theme = createTheme();
