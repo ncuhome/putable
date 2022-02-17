@@ -23,7 +23,7 @@ import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import {DialogActions, DialogContent} from "@mui/material";
 import {TableDataType, TableRowsType} from "../lib/interface/api";
-import {errorNotice} from "./notice";
+import {errorNotice, successNotice} from "./notice";
 import {getTableRequest, postTableRequest} from "../lib/api/api";
 import {addLoading, delLoading} from "./loading";
 
@@ -149,6 +149,7 @@ export default function Index({ tableDataHandler, tableRowsData }: Props) {
           token: login.token
         })
         tableDataHandler(tableData)
+        successNotice('请求成功')
       } else {
         if(!confirm('POST请求将发送至服务器，是否继续')) return
         await postTableRequest({
@@ -158,6 +159,7 @@ export default function Index({ tableDataHandler, tableRowsData }: Props) {
             table: tableRowsData
           }
         })
+        successNotice('请求成功')
       }
     } catch (err) {
       errorNotice(err as string)
