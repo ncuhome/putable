@@ -21,7 +21,8 @@ export default function Index(props: Props) {
   const [method, setMethod] = useState('')
   const [description, setDescription] = useState('')
   useEffect(() => {
-    if(props.spaceList === undefined || props.apiID === undefined
+    if(props.apiID === undefined) return
+    if(props.spaceList === undefined
       || props.spaceList.length - 1 < props.spaceID
       || props.spaceList[props.spaceID].apiList.length - 1 < props.apiID) {
       errorNotice('对象不存在')
