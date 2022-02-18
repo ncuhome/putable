@@ -7,23 +7,29 @@ export default [
         columns_option: [{
             headerName: 'id',
             type: 'string',
-            width: 100,
+            width: 60,
             editable: false,
+            align: 'center',
+            headerAlign: 'center',
           },{
             headerName: 'title',
             type: 'string',
-            width: 200,
+            width: 100,
             editable: true,
+            align: 'center',
+            headerAlign: 'center',
           },{
             headerName: 'content',
             type: 'string',
-            width: 400,
+            width: 600,
             editable: true,
+            align: 'left',
+            headerAlign: 'center',
           }
         ],
         table: [
           ['1', 'title1', 'this is content1'],
-          ['2', 'title2', 'this is content2'],
+          ['2', 'title2', 'this is content2222222222222222222222222222222222222222'],
           ['3', 'title3', 'this is content3'],
           ['4', 'title4', 'this is content4'],
           ['5', 'title5', 'this is content5'],

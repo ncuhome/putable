@@ -1,3 +1,5 @@
+import {GridAlignment} from "@mui/x-data-grid";
+
 export interface BaseType<T> {
   data: T
 }
@@ -12,15 +14,17 @@ export interface LoginResType {
 
 export type ColumnsOptionType = ColumnOptionType[]
 export interface ColumnOptionType {
-  headerName?: string,
-  type?: string,
-  width?: number,
-  editable?: boolean,
+  headerName?: string
+  type?: string
+  width?: number
+  editable?: boolean
+  align?: GridAlignment
+  headerAlign?: GridAlignment
 }
 
 export interface TableBaseType {
-  row: number,
-  column: number,
+  row: number
+  column: number
 }
 
 type RowType = string[]
