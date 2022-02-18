@@ -274,7 +274,7 @@ function Space(props: SpaceProps) {
                 ))
               }
           <ListItem>
-            <Button sx={{ mx: 'auto' }} variant="outlined" size="small"
+            <Button sx={{ mx: 'auto', fontSize: 10 }} variant="outlined" size="small"
                     onClick={() => props.handleApiSetting(props.spaceID)}>
               添加接口
             </Button>
@@ -296,7 +296,7 @@ function LoginItem(props: LoginItemProps) {
       <div>
         <ListItem>
           <ListItemText primary="已登录" />
-          <Button variant="outlined" size="small" onClick={() => props.handleLogin(props.spaceID)}>
+          <Button sx={{fontSize: 10}} variant="outlined" size="small" onClick={() => props.handleLogin(props.spaceID)}>
             切换
           </Button>
         </ListItem>
@@ -330,9 +330,9 @@ function Ports(props: PortsProps) {
   return (
     <div>
       <ListItem>
-        <Chip label={props.method} color="primary" size="small" />
-        <ListItemText primary={props.description} />
-        <Button size="small" onClick={() => props.handleApiSetting(props.spaceID, props.apiID)}>
+        <span  style={{fontSize: 12, flex: 1}}>{props.description}</span>
+        <Button size="small"
+                onClick={() => props.handleApiSetting(props.spaceID, props.apiID)}>
           修改
         </Button>
         <Button variant="contained" size="small" onClick={onSend}>发送</Button>
