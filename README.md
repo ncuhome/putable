@@ -131,22 +131,28 @@ URL地址：自定义
                 "type": 'string',  //数据类型，暂时只支持string
                 "width": 100,  //在表格中列的显示宽度
                 "editable": false,  //是否可编辑
+                "align": "center",  // 列对齐方式，left, right, center
+                "headerAlign": "center"  //标题对齐方式，left, right, center
             },{
                 "headerName": "title",
                 "type": "string",
                 "width": 200,
                 "editable": true,
+                "align": "center",
+                "headerAlign": "center"
             },{
                 "headerName": "content",
                 "type": "string",
                 "width": 400,
                 "editable": true,
+                "align": "center",
+                "headerAlign": "center"
             }
         ],
         "table": [  //具体表格数据
             ['1', 'title1', 'this is content1'],
             ['2', 'title2', 'this is content2'],
-            ['3', 'title3', 'this is content3'],
+            ['3', 'title3', 'this is content3']
         ]
     }
 }
@@ -171,7 +177,7 @@ URL地址：自定义
     "table": [  //具体表格数据
         ['1', 'title1', 'this is content1'],
         ['2', 'title2', 'this is content2'],
-        ['3', 'title3', 'this is content3'],
+        ['3', 'title3', 'this is content3']
     ]
 }
 ```
