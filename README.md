@@ -1,5 +1,11 @@
 # JTDOCS
 
+本仓库已停止维护。
+
+新的积极维护的仓库由 ncuhome 组织维护：https://github.com/ncuhome/putable
+
+----- 以下是暂停维护时的README -----
+
 简介：
 
 一个toD的开源项目
