@@ -18,11 +18,11 @@ https://www.yuque.com/docs/share/223970bc-f7ab-45d9-a62d-e0cc5eeea343
 
 https://www.figma.com/file/0PiPc5D3lImcgRWExfFpt5/jtdocs?node-id=0%3A1
 
-# 技术栈说明
+## 技术栈说明
 
 使用 create-react-app 初始化的 typescript 项目，
 
-# 工程文件结构说明
+## 工程文件结构说明
 
 /src/components   各类组件
 
@@ -40,8 +40,7 @@ https://www.figma.com/file/0PiPc5D3lImcgRWExfFpt5/jtdocs?node-id=0%3A1
 
 /docs   github pages部署页面
 
-
-# 接口约定文档
+## 接口约定文档
 
 后端开发者可按本文档实现一套接口，而本项目jtdocs可作为使用该接口的前端，进行数据操作
 
@@ -49,7 +48,7 @@ host: 自定义
 
 port：自定义
 
-## 使用前须知
+### 使用前须知
 
 除登录外，所有接口都应当带上Authorization请求头，值为登录接口返回的token（json web token）。
 
@@ -63,13 +62,13 @@ http状态码为 2xx 时，将被认为请求成功，否则认为发送错误
 | ---  | ---  | ---  |
 |  message  |  string  |  错误描述，将展示给用户 |
 
-```
+```js
 {
     "message":"请求参数错误",
 }
 ```
 
-## 方法描述：用户登录
+### 方法描述：用户登录
 
 URL地址：自定义
 
@@ -84,7 +83,7 @@ URL地址：自定义
 
 请求体示例
 
-```
+```js
 {
     "account":"pyf",
     "password":"12345678"
@@ -99,7 +98,7 @@ URL地址：自定义
 
 响应体示例
 
-```
+```js
 {
     "data": {
         "token": "xxx.xxx.xxx"
@@ -107,7 +106,7 @@ URL地址：自定义
 }
 ```
 
-## 方法描述：获取数据
+### 方法描述：获取数据
 
 URL地址：自定义
 
@@ -123,7 +122,7 @@ URL地址：自定义
 
 响应体示例
 
-```
+```js
 {
     "data": {
         "columns_option": [{  //列参数，该参数可选，且各属性也都是可选的
@@ -158,7 +157,7 @@ URL地址：自定义
 }
 ```
 
-## 方法描述：推送数据
+### 方法描述：推送数据
 
 URL地址：自定义
 
@@ -172,7 +171,7 @@ URL地址：自定义
 
 请求体示例
 
-```
+```js
 {
     "table": [  //具体表格数据
         ['1', 'title1', 'this is content1'],

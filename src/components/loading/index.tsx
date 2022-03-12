@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
-import CircularProgress from '@mui/material/CircularProgress';
-import style from './index.module.css';
+import { ReactNode, useEffect, useState } from 'react'
+import CircularProgress from '@mui/material/CircularProgress'
+import style from './index.module.css'
 
 interface LoadingProps {
-  children: React.ReactNode
+  children: ReactNode
 }
 
 interface DisplayProgressProps {
@@ -11,26 +11,26 @@ interface DisplayProgressProps {
 }
 
 function DisplayProgress({ loadingStack = 0 }: DisplayProgressProps) {
-  const [delay, setDelay] = useState(false);
-  const [display, setDisplay] = useState(false);
+  const [delay, setDelay] = useState(false)
+  const [display, setDisplay] = useState(false)
   useEffect(() => {
     if (loadingStack === 1) {
       setTimeout(() => {
-        setDelay(true);
-      }, 500);
-      return;
+        setDelay(true)
+      }, 500)
+      return
     }
     if (loadingStack <= 0) {
-      setDisplay(false);
+      setDisplay(false)
     }
-  }, [loadingStack]);
+  }, [loadingStack])
   useEffect(() => {
-    if (!delay) return;
+    if (!delay) return
     if (delay && loadingStack > 0) {
-      setDisplay(true);
+      setDisplay(true)
     }
-    setDelay(false);
-  }, [delay]);
+    setDelay(false)
+  }, [delay])
 
   if (display) {
     return (
@@ -39,29 +39,29 @@ function DisplayProgress({ loadingStack = 0 }: DisplayProgressProps) {
           <CircularProgress />
         </div>
       </div>
-    );
+    )
   }
-  return null;
+  return null
 }
 
 let addLoading: () => void
 let delLoading: () => void
 
 function LoadingProvider({ children }: LoadingProps) {
-  const [addStack, setAddStack] = useState(0);
-  const [delStack, setDelStack] = useState(0);
+  const [addStack, setAddStack] = useState(0)
+  const [delStack, setDelStack] = useState(0)
   addLoading = () => {
-    setAddStack(addStack + 1);
-  };
+    setAddStack(addStack + 1)
+  }
   delLoading = () => {
-    setDelStack(delStack + 1);
-  };
+    setDelStack(delStack + 1)
+  }
   return (
     <>
       <DisplayProgress loadingStack={addStack - delStack} />
-      { children }
+      {children}
     </>
-  );
+  )
 }
 
-export { LoadingProvider, addLoading, delLoading };
+export { LoadingProvider, addLoading, delLoading }

@@ -1,4 +1,4 @@
-import {GridAlignment} from "@mui/x-data-grid";
+import { GridAlignment } from '@mui/x-data-grid'
 
 export interface BaseType<T> {
   data: T

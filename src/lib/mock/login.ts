@@ -4,8 +4,8 @@ export default [
     type: 'post',
     response: {
       data: {
-        token: 'json web token'
-      }
-    }
+        token: 'json web token',
+      },
+    },
   },
-];
+]

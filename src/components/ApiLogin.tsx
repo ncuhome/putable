@@ -1,18 +1,18 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {Typography} from "@mui/material";
-import {LoginType, SpaceType} from "../lib/interface/local";
-import {errorNotice, successNotice} from "./notice";
-import {loginRequest} from "../lib/api/api";
-import {addLoading, delLoading} from "./loading";
-import {useEffect, useState} from "react";
+import * as React from 'react'
+import Button from '@mui/material/Button'
+import CssBaseline from '@mui/material/CssBaseline'
+import TextField from '@mui/material/TextField'
+import Box from '@mui/material/Box'
+import Container from '@mui/material/Container'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { Typography } from '@mui/material'
+import { LoginType, SpaceType } from '../lib/interface/local'
+import { errorNotice, successNotice } from './notice'
+import { loginRequest } from '../lib/api/api'
+import { addLoading, delLoading } from './loading'
+import { useEffect, useState } from 'react'
 
-const theme = createTheme();
+const theme = createTheme()
 
 interface Props {
   spaceID: number
@@ -23,8 +23,10 @@ export default function Index(props: Props) {
   const [url, setUrl] = useState('')
   const [account, setAccount] = useState('')
   useEffect(() => {
-    if(props.spaceList === undefined
-      || props.spaceList.length - 1 < props.spaceID) {
+    if (
+      props.spaceList === undefined ||
+      props.spaceList.length - 1 < props.spaceID
+    ) {
       errorNotice('对象不存在')
       return
     }
@@ -34,15 +36,15 @@ export default function Index(props: Props) {
   }, [])
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    event.preventDefault()
+    const data = new FormData(event.currentTarget)
     addLoading()
     await login(data)
     delLoading()
   }
 
   const login = async (data: FormData) => {
-    let res = { token: ''}
+    let res = { token: '' }
     try {
       res = await loginRequest({
         url: data.get('url') as string,
@@ -58,9 +60,12 @@ export default function Index(props: Props) {
     const newLogin: LoginType = {
       url: data.get('url') as string,
       account: data.get('account') as string,
-      token: res.token
+      token: res.token,
     }
-    if(props.spaceList === undefined || props.spaceList.length - 1 < props.spaceID) {
+    if (
+      props.spaceList === undefined ||
+      props.spaceList.length - 1 < props.spaceID
+    ) {
       errorNotice('对象不存在')
       return
     }
@@ -70,26 +75,29 @@ export default function Index(props: Props) {
   }
 
   const handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUrl(event.target.value as string);
-  };
+    setUrl(event.target.value as string)
+  }
   const handleAccountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAccount(event.target.value as string);
-  };
-
+    setAccount(event.target.value as string)
+  }
 
   return (
     <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs" sx={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: 600,
-        bgcolor: 'background.paper',
-        border: '2px solid #000',
-        boxShadow: 24,
-        outline: 0
-      }}>
+      <Container
+        component="main"
+        maxWidth="xs"
+        sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: 600,
+          bgcolor: 'background.paper',
+          border: '2px solid #000',
+          boxShadow: 24,
+          outline: 0,
+        }}
+      >
         <CssBaseline />
         <Box
           sx={{
@@ -103,7 +111,12 @@ export default function Index(props: Props) {
           <Typography component="h1" variant="h5">
             登录以获取权限
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{ mt: 1 }}
+          >
             <TextField
               margin="normal"
               required
@@ -147,5 +160,5 @@ export default function Index(props: Props) {
         </Box>
       </Container>
     </ThemeProvider>
-  );
+  )
 }

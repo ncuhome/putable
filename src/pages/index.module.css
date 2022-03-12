@@ -1,9 +1,9 @@
 .container {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
 }
 
 .tableContainer {
-    flex: 1;
+  flex: 1;
 }

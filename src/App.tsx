@@ -1,11 +1,10 @@
-import React from 'react';
-import { HashRouter, Route } from 'react-router-dom';
-import { CacheRoute, CacheSwitch } from 'react-router-cache-route';
+import { HashRouter } from 'react-router-dom'
+import { CacheRoute, CacheSwitch } from 'react-router-cache-route'
 
-import Home from './pages/Home';
+import Home from './pages/Home'
 import './lib/mock/mock'
-import {LoadingProvider} from "./components/loading";
-import {NoticeProvider} from "./components/notice";
+import { LoadingProvider } from './components/loading'
+import { NoticeProvider } from './components/notice'
 
 function App() {
   return (
@@ -18,7 +17,7 @@ function App() {
         </HashRouter>
       </NoticeProvider>
     </LoadingProvider>
-  );
+  )
 }
 
-export default App;
+export default App

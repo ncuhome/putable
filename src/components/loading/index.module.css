@@ -1,13 +1,13 @@
 .container {
-    position: sticky;
-    width: 100%;
-    top: 64px;
+  position: sticky;
+  width: 100%;
+  top: 64px;
 }
 
 .innerContainer {
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }

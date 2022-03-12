@@ -12,7 +12,7 @@ class Storage<T> {
   get<U>(key: T): U | null {
     const fullKey = this.getFullKey(key)
     const data = localStorage.getItem(fullKey)
-    if(data !== null) return JSON.parse(data)
+    if (data !== null) return JSON.parse(data)
     return data
   }
   set(key: T, data: any) {
@@ -39,9 +39,9 @@ export {globalStorage, spaceStorage, apiStorage};
 const enum globalKey {
   'spaceList',
   'tableRows',
-  'tableColumns'
+  'tableColumns',
 }
 type globalKeyType = keyof typeof globalKey
 const globalStorage = new Storage<globalKeyType>('global')
 
-export {globalStorage}
+export { globalStorage }
