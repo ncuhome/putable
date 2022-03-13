@@ -1,19 +1,19 @@
 import { GridAlignment } from '@mui/x-data-grid'
 
-export interface BaseType<T> {
+export interface Base<T> {
   data: T
 }
 
-export interface ErrorType {
+export interface Error {
   message: string
 }
 
-export interface LoginResType {
+export interface LoginResult {
   token: string
 }
 
-export type ColumnsOptionType = ColumnOptionType[]
-export interface ColumnOptionType {
+export type ColumnOptions = ColumnOption[]
+export interface ColumnOption {
   headerName?: string
   type?: string
   width?: number
@@ -22,19 +22,19 @@ export interface ColumnOptionType {
   headerAlign?: GridAlignment
 }
 
-export interface TableBaseType {
+export interface TableBase {
   row: number
   column: number
 }
 
-type RowType = string[]
-export type TableRowsType = RowType[]
+type Row = string[]
+export type Rows = Row[]
 
-export interface TableDataType {
-  columns_option?: ColumnsOptionType
-  table: TableRowsType
+export interface TableData {
+  column_options?: ColumnOptions
+  table: Rows
 }
 
-export interface TableDataReqType {
-  table: TableRowsType
+export interface TableDataRequest {
+  table: Rows
 }

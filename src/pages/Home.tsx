@@ -8,11 +8,7 @@ import {
   GridRowsProp,
 } from '@mui/x-data-grid'
 import { useEffect, useState } from 'react'
-import {
-  ColumnsOptionType,
-  TableDataType,
-  TableRowsType,
-} from '../lib/interface/api'
+import { ColumnOptions, TableData, Rows } from '../lib/interface/api'
 import { globalStorage } from '../lib/storage/storage'
 
 export default function Home() {
@@ -21,10 +17,10 @@ export default function Home() {
   // const [tableColumnsOption, setTableColumnsOption] =
   //   useState<ColumnsOptionType>([])
   // NOTE: tableColumnsOption is not used
-  const [tableRows, setTableRows] = useState<TableRowsType>([])
+  const [tableRows, setTableRows] = useState<Rows>([])
   useEffect(() => {
-    const columnsOption = globalStorage.get<ColumnsOptionType>('tableColumns')
-    const rows = globalStorage.get<TableRowsType>('tableRows')
+    const columnsOption = globalStorage.get<ColumnOptions>('tableColumns')
+    const rows = globalStorage.get<Rows>('tableRows')
     if (columnsOption !== null) {
       // setTableColumnsOption(columnsOption)
       setTableRenderColumns(handleRenderColumns(columnsOption))
@@ -37,7 +33,7 @@ export default function Home() {
     }
   }, [])
 
-  const handleRenderRows = (source: TableRowsType) => {
+  const handleRenderRows = (source: Rows) => {
     return source.map((row, index) => {
       const rowData: GridRowModel = { id: index + 1 }
       for (let i = 0, len = row.length; i < len; i++) {
@@ -46,7 +42,7 @@ export default function Home() {
       return rowData
     })
   }
-  const handleRenderColumns = (source: ColumnsOptionType) => {
+  const handleRenderColumns = (source: ColumnOptions) => {
     return source.map((column, index) => {
       const columnData: GridColDef = {
         field: (index + 1).toString(),
@@ -66,20 +62,27 @@ export default function Home() {
   }
 
   //请求获取到表格数据
-  const tableDataHandler = (data: TableDataType) => {
+  const tableDataHandler = (data: TableData) => {
     globalStorage.set('tableRows', data.table)
-    globalStorage.set('tableColumns', data.columns_option)
+    globalStorage.set('tableColumns', data.column_options)
     setTableRows(data.table)
     setTableRenderRows(handleRenderRows(data.table))
-    if (data.columns_option === undefined) return
-    // setTableColumnsOption(data.columns_option)
-    setTableRenderColumns(handleRenderColumns(data.columns_option))
+    if (data.column_options === undefined) return
+    // setTableColumnsOption(data.column_options)
+    setTableRenderColumns(handleRenderColumns(data.column_options))
+  }
+
+  const handleTableFromFile = (newTableRows: Rows) => {
+    globalStorage.set('tableRows', newTableRows)
+    setTableRows(newTableRows)
+    setTableRenderRows(handleRenderRows(newTableRows))
   }
 
   return (
     <div className={styles.container}>
       <DrawerLeft
         tableRowsData={tableRows}
+        setTableRows={handleTableFromFile}
         tableDataHandler={tableDataHandler}
       />
       <div className={styles.tableContainer}>

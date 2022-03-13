@@ -4,7 +4,7 @@ export default [
     type: 'get',
     response: {
       data: {
-        columns_option: [
+        column_options: [
           {
             headerName: 'id',
             type: 'string',

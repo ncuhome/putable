@@ -125,7 +125,7 @@ URL地址：自定义
 ```js
 {
     "data": {
-        "columns_option": [{  //列参数，该参数可选，且各属性也都是可选的
+        "column_options": [{  //列参数，该参数可选，且各属性也都是可选的
                 "headerName": 'id',  //表头
                 "type": 'string',  //数据类型，暂时只支持string
                 "width": 100,  //在表格中列的显示宽度

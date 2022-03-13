@@ -11,7 +11,7 @@ import Divider from '@mui/material/Divider'
 import Button from '@mui/material/Button'
 import ExpandLess from '@mui/icons-material/ExpandLess'
 import ExpandMore from '@mui/icons-material/ExpandMore'
-import { ApiType, LoginType, SpaceType } from '../lib/interface/local'
+import { Api, LoginRequest, Space } from '../lib/interface/local'
 import { useEffect, useState } from 'react'
 import { globalStorage } from '../lib/storage/storage'
 import Modal from '@mui/material/Modal'
@@ -20,12 +20,13 @@ import ApiSetting from './ApiSetting'
 import TextField from '@mui/material/TextField'
 import Dialog from '@mui/material/Dialog'
 import { DialogActions, DialogContent } from '@mui/material'
-import { TableDataType, TableRowsType } from '../lib/interface/api'
+import { TableData, Rows } from '../lib/interface/api'
 import { errorNotice, successNotice } from './notice'
 import { getTableRequest, postTableRequest } from '../lib/api/api'
 import { addLoading, delLoading } from './loading'
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
+import { parseExcel, rowsToExcel } from '../lib/excel'
 const drawerWidth = 300
 
 interface ApiLoginType {
@@ -41,19 +42,21 @@ interface ApiSettingType {
 export default function Index({
   tableDataHandler,
   tableRowsData,
+  setTableRows,
 }: {
-  tableDataHandler: (data: TableDataType) => void
-  tableRowsData: TableRowsType
+  tableDataHandler: (data: TableData) => void
+  tableRowsData: Rows
+  setTableRows: (rows: Rows) => void
 }) {
   const apiLoginInit = { open: false, spaceID: 0 }
   const apiSettingInit = { open: false, spaceID: 0 }
   const [apiLogin, setApiLogin] = useState<ApiLoginType>(apiLoginInit)
   const [apiSetting, setApiSetting] = useState<ApiSettingType>(apiSettingInit)
-  const [spaceList, setSpaceList] = useState<SpaceType[]>()
+  const [spaceList, setSpaceList] = useState<Space[]>()
   const [spaceName, setSpaceName] = useState('')
   const [spaceNameOpen, setSpaceNameOpen] = useState(false)
   useEffect(() => {
-    let data = globalStorage.get<SpaceType[]>('spaceList')
+    let data = globalStorage.get<Space[]>('spaceList')
     if (data === null) {
       data = [
         {
@@ -105,11 +108,11 @@ export default function Index({
   }
   const handleCloseApiSetting = () => setApiSetting(apiSettingInit)
 
-  const onApiLoginSpaceChange = (data: SpaceType[]) => {
+  const onApiLoginSpaceChange = (data: Space[]) => {
     setSpaceList(data)
     setApiLogin(apiLoginInit)
   }
-  const onApiSettingSpaceChange = (data: SpaceType[]) => {
+  const onApiSettingSpaceChange = (data: Space[]) => {
     setSpaceList(data)
     setApiSetting(apiSettingInit)
   }
@@ -157,6 +160,7 @@ export default function Index({
           url: api.url,
           token: login.token,
         })
+        console.log(tableData)
         tableDataHandler(tableData)
         successNotice('请求成功')
       } else {
@@ -173,6 +177,14 @@ export default function Index({
     } catch (err) {
       errorNotice(err as string)
     }
+  }
+
+  const handleExport = () => {
+    // wait for 500ms to make sure the table is saved
+    setTimeout(() => rowsToExcel(tableRowsData), 500)
+  }
+  const handleImport = async (file: File) => {
+    setTableRows(await parseExcel(file))
   }
 
   return (
@@ -241,12 +253,31 @@ export default function Index({
               mb: 2,
             }}
           >
-            <Button variant="contained" startIcon={<CloudDownloadIcon />}>
+            <Button
+              variant="contained"
+              startIcon={<CloudDownloadIcon />}
+              onClick={handleExport}
+            >
               导出表格
             </Button>
-            <Button variant="contained" startIcon={<CloudUploadIcon />}>
-              导入表格
-            </Button>
+            <label htmlFor="excel-upload">
+              <input
+                id="excel-upload"
+                style={{ display: 'none' }}
+                type="file"
+                accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                onChange={(e) =>
+                  e.target.files && handleImport(e.target.files[0])
+                }
+              />
+              <Button
+                variant="contained"
+                component="span"
+                startIcon={<CloudUploadIcon />}
+              >
+                导入表格
+              </Button>
+            </label>
           </Box>
           <Divider />
           {/* 空间折叠列表 */}
@@ -258,7 +289,7 @@ export default function Index({
             >
               {spaceList &&
                 spaceList.map((item, index) => (
-                  <Space
+                  <SpaceViewer
                     spaceID={index}
                     key={index}
                     {...item}
@@ -285,13 +316,13 @@ export default function Index({
   )
 }
 
-interface SpaceProps extends SpaceType {
+interface SpaceProps extends Space {
   spaceID: number
   handleLogin: (spaceID: number) => void
   handleApiSetting: (spaceID: number, apiID?: number) => void
   handleSend: (spaceID: number, apiID: number) => void
 }
-function Space(props: SpaceProps) {
+function SpaceViewer(props: SpaceProps) {
   const [open, setOpen] = React.useState(true)
   const handleClick = () => {
     setOpen(!open)
@@ -337,7 +368,7 @@ function Space(props: SpaceProps) {
   )
 }
 
-interface LoginItemProps extends LoginType {
+interface LoginItemProps extends LoginRequest {
   spaceID: number
   handleLogin: (spaceID: number) => void
 }
@@ -377,7 +408,7 @@ function LoginItem(props: LoginItemProps) {
   )
 }
 
-interface PortsProps extends ApiType {
+interface PortsProps extends Api {
   spaceID: number
   apiID: number
   handleApiSetting: (spaceID: number, apiID: number) => void

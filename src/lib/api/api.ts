@@ -1,9 +1,9 @@
 import axios from 'axios'
 import {
-  BaseType,
-  LoginResType,
-  TableDataReqType,
-  TableDataType,
+  Base,
+  LoginResult,
+  TableDataRequest,
+  TableData,
 } from '../interface/api'
 import { axiosReqError, axiosResError } from './common'
 
@@ -17,11 +17,11 @@ http.interceptors.response.use(undefined, axiosResError)
 interface TableRequestProps {
   url: string
   token: string
-  data?: TableDataReqType
+  data?: TableDataRequest
 }
 export async function getTableRequest({ url, token }: TableRequestProps) {
   return await http
-    .get<BaseType<TableDataType>>(url, {
+    .get<Base<TableData>>(url, {
       headers: {
         Authorization: token,
       },
@@ -52,7 +52,7 @@ export async function loginRequest({
   password,
 }: LoginRequestProps) {
   return await http
-    .post<BaseType<LoginResType>>(url, {
+    .post<Base<LoginResult>>(url, {
       account: account,
       password: password,
     })

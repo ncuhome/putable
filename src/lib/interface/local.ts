@@ -22,19 +22,19 @@ export interface Api {
 
  */
 
-export interface SpaceType {
+export interface Space {
   name: string
-  login: LoginType
-  apiList: ApiType[]
+  login: LoginRequest
+  apiList: Api[]
 }
 
-export interface LoginType {
+export interface LoginRequest {
   url: string
   account: string
   token: string
 }
 
-export interface ApiType {
+export interface Api {
   url: string
   method: string
   description: string

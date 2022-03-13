@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import { Typography } from '@mui/material'
-import { LoginType, SpaceType } from '../lib/interface/local'
+import { LoginRequest, Space } from '../lib/interface/local'
 import { errorNotice, successNotice } from './notice'
 import { loginRequest } from '../lib/api/api'
 import { addLoading, delLoading } from './loading'
@@ -12,8 +12,8 @@ import { useEffect, useState } from 'react'
 
 interface Props {
   spaceID: number
-  spaceList?: SpaceType[]
-  onSpaceChange: (data: SpaceType[]) => void
+  spaceList?: Space[]
+  onSpaceChange: (data: Space[]) => void
 }
 export default function Index(props: Props) {
   const [url, setUrl] = useState('')
@@ -53,7 +53,7 @@ export default function Index(props: Props) {
       return
     }
 
-    const newLogin: LoginType = {
+    const newLogin: LoginRequest = {
       url: data.get('url') as string,
       account: data.get('account') as string,
       token: res.token,
@@ -99,7 +99,6 @@ export default function Index(props: Props) {
           flexDirection: 'column',
           alignItems: 'center',
           padding: 4,
-          background: '#ffffff',
         }}
       >
         <Typography component="h1" variant="h5">

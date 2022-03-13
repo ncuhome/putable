@@ -7,14 +7,14 @@ import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import MenuItem from '@mui/material/MenuItem'
 import { useEffect, useState } from 'react'
-import { ApiType, SpaceType } from '../lib/interface/local'
+import { Api, Space } from '../lib/interface/local'
 import { errorNotice } from './notice'
 
 interface Props {
   spaceID: number
   apiID?: number
-  spaceList?: SpaceType[]
-  onSpaceChange: (data: SpaceType[]) => void
+  spaceList?: Space[]
+  onSpaceChange: (data: Space[]) => void
 }
 export default function Index(props: Props) {
   const [url, setUrl] = useState('')
@@ -39,7 +39,7 @@ export default function Index(props: Props) {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
-    const newApi: ApiType = {
+    const newApi: Api = {
       url: data.get('url') as string,
       method: data.get('method') as string,
       description: data.get('description') as string,
@@ -99,7 +99,6 @@ export default function Index(props: Props) {
           flexDirection: 'column',
           alignItems: 'center',
           padding: 4,
-          background: '#ffffff',
         }}
       >
         <Typography component="h1" variant="h5" sx={{ mt: 5 }}>

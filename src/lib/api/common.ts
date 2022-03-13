@@ -1,8 +1,8 @@
-export function axiosReqError(error: any): any {
+export function axiosReqError() {
   throw '请求发生错误，请检查网络后重试'
 }
 
-export function axiosResError(error: any): any {
+export function axiosResError(error: any) {
   if (error?.message === 'Network Error') {
     throw '请求错误，请检查网络后重试'
   }
