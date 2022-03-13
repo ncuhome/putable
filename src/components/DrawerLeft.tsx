@@ -7,7 +7,6 @@ import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
 import ListItem from '@mui/material/ListItem'
 import Collapse from '@mui/material/Collapse'
-import Toolbar from '@mui/material/Toolbar'
 import Divider from '@mui/material/Divider'
 import Button from '@mui/material/Button'
 import ExpandLess from '@mui/icons-material/ExpandLess'
@@ -25,7 +24,8 @@ import { TableDataType, TableRowsType } from '../lib/interface/api'
 import { errorNotice, successNotice } from './notice'
 import { getTableRequest, postTableRequest } from '../lib/api/api'
 import { addLoading, delLoading } from './loading'
-
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload'
+import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 const drawerWidth = 300
 
 interface ApiLoginType {
@@ -38,11 +38,13 @@ interface ApiSettingType {
   apiID?: number
 }
 
-interface Props {
+export default function Index({
+  tableDataHandler,
+  tableRowsData,
+}: {
   tableDataHandler: (data: TableDataType) => void
   tableRowsData: TableRowsType
-}
-export default function Index({ tableDataHandler, tableRowsData }: Props) {
+}) {
   const apiLoginInit = { open: false, spaceID: 0 }
   const apiSettingInit = { open: false, spaceID: 0 }
   const [apiLogin, setApiLogin] = useState<ApiLoginType>(apiLoginInit)
@@ -231,7 +233,21 @@ export default function Index({ tableDataHandler, tableRowsData }: Props) {
           variant="permanent"
           anchor="left"
         >
-          <Toolbar />
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-evenly',
+              mt: 2,
+              mb: 2,
+            }}
+          >
+            <Button variant="contained" startIcon={<CloudDownloadIcon />}>
+              导出表格
+            </Button>
+            <Button variant="contained" startIcon={<CloudUploadIcon />}>
+              导入表格
+            </Button>
+          </Box>
           <Divider />
           {/* 空间折叠列表 */}
           {

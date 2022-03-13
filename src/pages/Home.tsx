@@ -20,6 +20,7 @@ export default function Home() {
   const [tableRenderRows, setTableRenderRows] = useState<GridRowsProp>([])
   // const [tableColumnsOption, setTableColumnsOption] =
   //   useState<ColumnsOptionType>([])
+  // NOTE: tableColumnsOption is not used
   const [tableRows, setTableRows] = useState<TableRowsType>([])
   useEffect(() => {
     const columnsOption = globalStorage.get<ColumnsOptionType>('tableColumns')
