@@ -8,7 +8,7 @@
 
 网站：
 
-https://jiutian-moon-team.github.io/jtdocs/
+https://ncuhome.github.io/putable/#/
 
 产品文档：
 
